@@ -3,6 +3,7 @@ import random
 import json
 import os
 
+app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
 
 # Charger les questions depuis le fichier JSON
