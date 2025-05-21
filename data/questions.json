@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "question": "Quelle est la dérivée de f(x) = 3x² + 2x ?",
+        "options": ["6x + 2", "3x + 2", "6x² + 2"],
+        "reponse": "6x + 2"
+    },
+    {
+        "id": 2,
+        "question": "Résolvez 2x + 3 = 7.",
+        "options": ["x = 1", "x = 2", "x = 3"],
+        "reponse": "x = 2"
+    },
+    {
+        "id": 3,
+        "question": "Quelle est la limite de (x² - 1)/(x - 1) quand x tend vers 1 ?",
+        "options": ["0", "1", "2"],
+        "reponse": "2"
+    }
+]

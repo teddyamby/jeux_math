@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeu de Calcul Mathématique</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .question {
+            font-size: 24px;
+            margin: 20px;
+        }
+        .options {
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu de Calcul Mathématique</h1>
+    <div id="question-container">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <button id="next-btn">Question Suivante</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionEl = document.getElementById('question');
+            const optionsEl = document.getElementById('options');
+            const nextBtn = document.getElementById('next-btn');
+            const resultEl = document.getElementById('result');
+
+            let currentQuestion = {};
+
+            function loadQuestion() {
+                fetch('/get_question')
+                    .then(res => res.json())
+                    .then(data => {
+                        currentQuestion = data;
+                        questionEl.textContent = data.question;
+                        optionsEl.innerHTML = '';
+                        data.options.forEach(option => {
+                            const btn = document.createElement('button');
+                            btn.textContent = option;
+                            btn.onclick = () => checkAnswer(option);
+                            optionsEl.appendChild(btn);
+                        });
+                        resultEl.textContent = '';
+                    });
+            }
+
+            function checkAnswer(answer) {
+                fetch('/check_answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: currentQuestion.id,
+                        answer: answer
+                    }),
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.correct) {
+                        resultEl.textContent = "Correct !";
+                        resultEl.style.color = "green";
+                    } else {
+                        resultEl.textContent = `Incorrect. La réponse correcte est ${data.correct_answer}.`;
+                        resultEl.style.color = "red";
+                    }
+                });
+            }
+
+            nextBtn.addEventListener('click', loadQuestion);
+            loadQuestion();
+        });
+    </script>
+</body>
+</html>
